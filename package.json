@@ -1,8 +1,8 @@
 {
-  "name": "webflow-barba-gsap-starter",
+  "name": "habitiny-website",
   "version": "1.0.0",
   "type": "module",
-  "description": "Webflow starter project with GSAP and Barba.js connected with netlify",
+  "description": "Habitiny website",
   "scripts": {
     "dev": "webpack serve --mode development",
     "build-css": "sass --style=compressed --no-source-map src/styles/style.scss dist/style.css && sass --style=compressed --no-source-map src/styles/style.scss src/style.css",
