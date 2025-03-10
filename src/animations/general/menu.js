@@ -1,5 +1,5 @@
 import locomotiveScroll from '../../utilities/smoothScroll.js'
-import { gsap } from '../../vendor.js'
+import { gsap, ScrollTrigger } from '../../vendor.js'
 
 let ctx
 
@@ -39,25 +39,27 @@ function init() {
       },
     })
 
-    // Build the open timeline
     openTl
-      .to(flyout, { paddingTop: flyoutPaddingTop, paddingBottom: flyoutPaddingBottom })
-      .to(flyout, { height: flyoutHeight }, '<')
-      .from(flyoutItems, { x: '2.5rem', stagger: 0.05, ease: 'power2.out' }, '<+0.25')
+      .to(flyout, { paddingTop: flyoutPaddingTop, paddingBottom: flyoutPaddingBottom, ease: 'back.out(1.2)' })
+      .to(flyout, { height: flyoutHeight, ease: 'back.out(1.2)' }, '<')
+      .from(flyoutItems, { x: '2.5rem', stagger: 0.05, ease: 'back.out(1.5)' }, '<+0.25')
       .from(flyoutItems, { opacity: 0, stagger: 0.05 }, '<')
-      .to(burgerLine1, { y: '3px', duration: 0.25, transformOrigin: 'center' }, '0')
-      .to(burgerLine2, { y: '-3px', duration: 0.25, transformOrigin: 'center' }, '0')
-      .to(burgerLine1, { rotate: 45, duration: 0.25, delay: 0.25, transformOrigin: 'center' }, '0')
-      .to(burgerLine2, { rotate: -45, duration: 0.25, delay: 0.25, transformOrigin: 'center' }, '0')
+      .to(burgerLine1, { y: '3px', duration: 0.25, transformOrigin: 'center', ease: 'back.in(3)' }, '0')
+      .to(burgerLine2, { y: '-3px', duration: 0.25, transformOrigin: 'center', ease: 'back.in(3)' }, '0')
+      .to(burgerLine1, { rotate: 45, duration: 0.25, delay: 0.25, transformOrigin: 'center', ease: 'back.out(3)' }, '0')
+      .to(
+        burgerLine2,
+        { rotate: -45, duration: 0.25, delay: 0.25, transformOrigin: 'center', ease: 'back.out(3)' },
+        '0'
+      )
 
-    // Build the close timeline
     closeTl
-      .to(burgerLine1, { rotate: 0, duration: 0.25, transformOrigin: 'center' }, '0')
-      .to(burgerLine2, { rotate: 0, duration: 0.25, transformOrigin: 'center' }, '0')
-      .to(burgerLine1, { y: '0px', duration: 0.25, delay: 0.25, transformOrigin: 'center' }, '0')
-      .to(burgerLine2, { y: '0px', duration: 0.25, delay: 0.25, transformOrigin: 'center' }, '0')
-      .to(flyout, { height: '0px' }, '<')
-      .to(flyout, { paddingTop: '0px', paddingBottom: '0px' }, '<+25%')
+      .to(burgerLine1, { rotate: 0, duration: 0.25, transformOrigin: 'center', ease: 'back.in(3)' }, '0')
+      .to(burgerLine2, { rotate: 0, duration: 0.25, transformOrigin: 'center', ease: 'back.in(3)' }, '0')
+      .to(burgerLine1, { y: '0px', duration: 0.25, delay: 0.25, transformOrigin: 'center', ease: 'back.out(3)' }, '0')
+      .to(burgerLine2, { y: '0px', duration: 0.25, delay: 0.25, transformOrigin: 'center', ease: 'back.out(3)' }, '0')
+      .to(flyout, { height: '0px', ease: 'back.in(1.2)' }, '<')
+      .to(flyout, { paddingTop: '0px', paddingBottom: '0px', ease: 'back.in(1.2)' }, '<+10%')
 
     trigger.addEventListener('click', () => {
       if (isAnimating) return

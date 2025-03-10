@@ -1,6 +1,7 @@
 import { cursor, magneticCursor } from './utilities/customCursor/customCursor.js'
 import { closeMenu } from './utilities/helper.js'
 import { proxy } from './utilities/pageReadyListener.js'
+import locomotiveScroll from './utilities/smoothScroll.js'
 import { isDesktop } from './utilities/variables.js'
 import { gsap, barba, ScrollTrigger } from './vendor.js'
 
@@ -17,24 +18,80 @@ barba.hooks.after(data => {
 })
 
 barba.init({
-  preventRunning: false,
+  preventRunning: true,
   transitions: [
     {
       name: 'default-transition',
       sync: true,
+      debug: true,
       leave(data) {
         const done = this.async()
-        proxy.pageReady = false
+
         closeMenu()
+
+        const overlay = document.querySelector('[anm-overlay=transition]')
+
+        const tl = gsap.timeline({
+          onStart: () => {
+            locomotiveScroll.stop()
+            gsap.set(overlay, { display: 'block' })
+          },
+          onComplete: () => {
+            locomotiveScroll.start()
+            locomotiveScroll.scrollTo(0, { immediate: true })
+          },
+          defaults: { duration: 1, ease: 'back.inOut' },
+        })
+
+        proxy.pageReady = false
+
+        tl.fromTo(data.current.container, { scaleX: 1 }, { scaleX: 0.95, y: '-5%' })
+          .fromTo(overlay, { opacity: 0 }, { opacity: 0.75 }, '<')
+          .call(() => done(), [], '>')
       },
-      after(data) {
+      enter(data) {
+        const overlay = document.querySelector('[anm-overlay=transition]')
+
+        const done = this.async()
+
+        const tl = gsap.timeline({
+          defaults: { duration: 0.5, delay: 0.25, ease: 'power3.out' },
+          onStart: () => {
+            locomotiveScroll.scrollTo(0, { immediate: true })
+          },
+        })
+        const currentWindowHeight = window.innerHeight
+        // prettier-ignore
+        tl.fromTo( data.next.container, {
+            clipPath: `polygon(0px ${currentWindowHeight}px, 100% ${currentWindowHeight}px, 100% ${currentWindowHeight}px, 0px ${currentWindowHeight}px)`,
+          },
+          {
+            clipPath: `polygon(0px 0px, 100% 0px, 100% ${currentWindowHeight}px, 0px ${currentWindowHeight}px)`,
+            ease: 'expo.out',
+            duration: 0.75,
+            onComplete: () => {
+              gsap.set(data.next.container, { clearProps: true })
+              gsap.set(overlay, { display: 'none' })
+              done()
+            },
+          }
+        )
+        // .call(() => { createSplitTypes.init(data.next.container) }, [], '<')
+        // .call(() => { handlePageEnterAnimation(data.next.container).play() }, [], '<+0.25')
+        // .fromTo(navigation, { opacity: 0, y: '0rem', scale: 1 }, { opacity: 1, y: '0rem', scale: 1, duration: 0.25, ease: 'power1.inOut' }, '<+0.5')
+        // .call(() => { proxy.pageReady = true }, [], '>')
         mm.add(isDesktop, () => {
           const customCursor = document.querySelector('.cb-cursor')
           customCursor.remove()
           cursor.init()
           magneticCursor()
         })
-        proxy.pageReady = true
+      },
+      before(data) {
+        data.next.container.classList.add('is-animating')
+      },
+      after(data) {
+        data.next.container.classList.remove('is-animating')
       },
     },
   ],

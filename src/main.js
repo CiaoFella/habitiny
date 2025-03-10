@@ -4,7 +4,7 @@ import menu from './animations/general/menu.js'
 import pageLoader from './animations/general/pageLoader.js'
 import { getCurrentPage, handleResponsiveElements, updateCurrentNavLink } from './utilities/helper.js'
 import createSplitTypes from './utilities/createSplitTypes.js'
-import lenis from './utilities/smoothScroll.js'
+import lenis, { createSmoothScroll } from './utilities/smoothScroll.js'
 import handlePageEnterAnimation from './animations/general/handlePageEnter.js'
 import { cursor, magneticCursor } from './utilities/customCursor/customCursor.js'
 import { isDesktop } from './utilities/variables.js'
@@ -95,4 +95,5 @@ barba.hooks.after(data => {
   updateCurrentNavLink()
   loadPageModule(pageName)
   handleResponsiveElements()
+  createSmoothScroll()
 })

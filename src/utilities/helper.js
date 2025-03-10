@@ -47,9 +47,10 @@ export function unwrapSpanAndPreserveClasses(element) {
 }
 
 export function closeMenu() {
-  const menuTrigger = document.querySelector('[data-menu-mobile=trigger]')
+  const menuTrigger = document.querySelector('[anm-nav=menu-trigger]')
+  const flyout = document.querySelector('[anm-nav=flyout]')
 
-  if (menuTrigger.classList.contains('is-active')) {
+  if (flyout.classList.contains('is-active')) {
     menuTrigger.click()
   }
 }
