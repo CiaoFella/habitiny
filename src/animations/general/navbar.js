@@ -4,10 +4,12 @@ let ctx
 
 function init() {
   const logo = document.querySelector('[anm-nav=logo]')
+  const logoWidth = logo.getBoundingClientRect().width
+  const logoHeight = logo.getBoundingClientRect().height
 
   ctx = gsap.to(logo, {
-    width: '4rem',
-    height: '4rem',
+    width: logoWidth * 0.8,
+    height: logoHeight * 0.8,
     duration: 0.75,
     ease: 'back.inOut(3)',
     scrollTrigger: {
