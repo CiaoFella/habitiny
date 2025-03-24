@@ -1,8 +1,6 @@
-import { cursor, magneticCursor } from './utilities/customCursor/customCursor.js'
 import { closeMenu } from './utilities/helper.js'
 import { proxy } from './utilities/pageReadyListener.js'
 import locomotiveScroll from './utilities/smoothScroll.js'
-import { isDesktop } from './utilities/variables.js'
 import { gsap, barba, ScrollTrigger } from './vendor.js'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -76,16 +74,6 @@ barba.init({
             },
           }
         )
-        // .call(() => { createSplitTypes.init(data.next.container) }, [], '<')
-        // .call(() => { handlePageEnterAnimation(data.next.container).play() }, [], '<+0.25')
-        // .fromTo(navigation, { opacity: 0, y: '0rem', scale: 1 }, { opacity: 1, y: '0rem', scale: 1, duration: 0.25, ease: 'power1.inOut' }, '<+0.5')
-        // .call(() => { proxy.pageReady = true }, [], '>')
-        mm.add(isDesktop, () => {
-          const customCursor = document.querySelector('.cb-cursor')
-          customCursor.remove()
-          cursor.init()
-          magneticCursor()
-        })
       },
       before(data) {
         data.next.container.classList.add('is-animating')

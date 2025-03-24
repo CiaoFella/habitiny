@@ -6,7 +6,6 @@ import { getCurrentPage, handleResponsiveElements, updateCurrentNavLink } from '
 import createSplitTypes from './utilities/createSplitTypes.js'
 import lenis, { createSmoothScroll } from './utilities/smoothScroll.js'
 import handlePageEnterAnimation from './animations/general/handlePageEnter.js'
-import { cursor, magneticCursor } from './utilities/customCursor/customCursor.js'
 import { isDesktop } from './utilities/variables.js'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -68,10 +67,6 @@ createSplitTypes.init()
 loadPageModule(initialPageName)
 pageLoader.init(initialPageName)
 handleResponsiveElements()
-mm.add(isDesktop, () => {
-  cursor.init()
-  magneticCursor()
-})
 
 document.addEventListener('onPageReady', event => {
   if (event.detail === true) {
