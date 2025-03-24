@@ -10,10 +10,16 @@ function init() {
   ctx = gsap.context(() => {
     wrappers.forEach(wrapper => {
       const items = wrapper.querySelectorAll('[anm-expandable=item]')
+      const expandFirstValue = wrapper.getAttribute('anm-expand-first')
+      const expandFirstByDefault = expandFirstValue === 'true'
 
-      items.forEach(item => {
+      items.forEach((item, index) => {
         const text = item.querySelector('[anm-expandable=text]')
         const splitText = new SplitType(text, { types: 'lines' })
+
+        if (expandFirstByDefault && index === 0) {
+          item.classList.add('is-active')
+        }
 
         item.addEventListener('click', () => {
           item.classList.toggle('is-active')
