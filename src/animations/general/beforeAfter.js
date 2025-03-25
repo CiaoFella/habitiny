@@ -13,34 +13,53 @@ function init() {
       const before = innerVisuals[0]
       const after = innerVisuals[1]
 
-      // Set initial clip path to show bottom half of the after element
       gsap.set(after, {
         clipPath: `inset(50% 0 0 0)`,
       })
 
-      // Create event listeners for mouse interaction
       visual.addEventListener('mousemove', e => {
-        const bounds = visual.getBoundingClientRect()
-        const y = e.clientY - bounds.top // mouse position relative to container
-        const percentY = (y / bounds.height) * 100
+        handleInteraction(e, visual, after, 'mouse')
+      })
 
-        // Update clip path based on mouse position
-        gsap.to(after, {
-          clipPath: `inset(${percentY}% 0 0 0)`,
-          duration: 0.5,
-          ease: 'power2.out',
-        })
+      visual.addEventListener('touchmove', e => {
+        handleInteraction(e, visual, after, 'touch')
       })
 
       visual.addEventListener('mouseleave', () => {
-        gsap.killTweensOf(after)
-        gsap.to(after, {
-          clipPath: 'inset(50% 0 0 0)',
-          duration: 1,
-          ease: 'expo.out',
-        })
+        resetClipPath(after)
+      })
+
+      visual.addEventListener('touchend', () => {
+        resetClipPath(after)
       })
     })
+  })
+}
+
+function handleInteraction(e, visual, after, eventType) {
+  if (eventType === 'touch') {
+    e.preventDefault()
+  }
+
+  const bounds = visual.getBoundingClientRect()
+
+  const clientY = eventType === 'mouse' ? e.clientY : e.touches[0].clientY
+  const y = clientY - bounds.top
+  const percentY = (y / bounds.height) * 100
+
+  gsap.to(after, {
+    clipPath: `inset(${percentY}% 0 0 0)`,
+    duration: 0.5,
+    ease: 'power2.out',
+  })
+}
+
+function resetClipPath(element) {
+  gsap.killTweensOf(element)
+  gsap.to(element, {
+    clipPath: 'inset(50% 0 0 0)',
+    duration: 1,
+    ease: 'expo.out',
   })
 }
 
