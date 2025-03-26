@@ -83,13 +83,13 @@ function init() {
     // so it will only start once a user reaches this section
     switchTab(0)
 
-    // switch tabs on click
-    contentItems.forEach((item, i) =>
-      item.addEventListener('click', () => {
-        if (item === activeContent) return // ignore click if current one is already active
+    // switch tabs on hover instead of click
+    contentItems.forEach((item, i) => {
+      item.addEventListener('mouseenter', () => {
+        if (item === activeContent) return // ignore hover if current one is already active
         switchTab(i)
       })
-    )
+    })
   })
 }
 
