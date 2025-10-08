@@ -23,6 +23,44 @@ function resetWebflow(data) {
   window.Webflow && window.Webflow.destroy()
   window.Webflow && window.Webflow.ready()
   window.Webflow && window.Webflow.require('ix2').init()
+
+  // Fix Webflow tabs after Barba transition
+  setTimeout(() => {
+    document.querySelectorAll('.w-tabs').forEach(tabWrapper => {
+      const menu = tabWrapper.querySelector('.w-tab-menu')
+      const tabLinks = tabWrapper.querySelectorAll('.w-tab-link')
+      const tabPanes = tabWrapper.querySelectorAll('.w-tab-pane')
+
+      if (!menu || tabLinks.length === 0) return
+
+      // Get the currently active pane
+      let activeIndex = 0
+      tabPanes.forEach((pane, index) => {
+        if (pane.classList.contains('w--tab-active')) {
+          activeIndex = index
+        }
+      })
+
+      // Reset all tabs to inactive state
+      tabLinks.forEach((link, index) => {
+        link.classList.remove('w--current')
+        link.setAttribute('aria-selected', 'false')
+        link.setAttribute('tabindex', '-1')
+      })
+
+      // Set the active tab
+      if (tabLinks[activeIndex]) {
+        tabLinks[activeIndex].classList.add('w--current')
+        tabLinks[activeIndex].setAttribute('aria-selected', 'true')
+        tabLinks[activeIndex].removeAttribute('tabindex')
+      }
+
+      // Reinitialize Webflow tabs
+      if (window.Webflow && window.Webflow.require('tabs')) {
+        window.Webflow.require('tabs').redraw()
+      }
+    })
+  }, 100)
 }
 
 function cleanupCurrentModule() {
