@@ -15,6 +15,7 @@ function init() {
 
       items.forEach((item, index) => {
         const text = item.querySelector('[anm-expandable=text]')
+        const splitText = new SplitType(text, { types: 'lines' })
 
         if (expandFirstByDefault && index === 0) {
           item.classList.add('is-active')

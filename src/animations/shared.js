@@ -6,6 +6,7 @@ import expandable from './general/expandable.js'
 import hoverScale from './general/hoverScale.js'
 import hero from './shared/hero.js'
 import animatedHouse from './general/animatedHouse.js'
+import productHero from './general/productHero.js'
 
 function init() {
   hero.init()
@@ -16,6 +17,7 @@ function init() {
   beforeAfter.init()
   expandable.init()
   animatedHouse.init()
+  productHero.init()
 }
 
 function cleanup() {
@@ -27,6 +29,7 @@ function cleanup() {
   beforeAfter.cleanup()
   expandable.cleanup()
   animatedHouse.cleanup()
+  productHero.cleanup()
 }
 
 export default {
